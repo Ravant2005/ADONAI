@@ -1,0 +1,86 @@
+[
+  {
+    "ioc_id": "fixture-test-dns-001",
+    "indicator_type": "domain",
+    "value": "c2-beacon.example.invalid",
+    "source_id": "adonai-safe-test-fixture",
+    "confidence": 1.0,
+    "severity": "HIGH",
+    "tags": [
+      "TEST_ONLY",
+      "c2-beaconing-emulation",
+      "rfc2606"
+    ],
+    "environment_scope": "LAB_AND_TEST_ONLY",
+    "is_test_fixture": true,
+    "attack_technique_id": "T1071.004",
+    "description": "Reserved RFC 2606 .invalid domain for safe DNS lookup detection testing."
+  },
+  {
+    "ioc_id": "fixture-test-phish-001",
+    "indicator_type": "url",
+    "value": "https://secure-verify-auth.example.test/login",
+    "source_id": "adonai-safe-test-fixture",
+    "confidence": 1.0,
+    "severity": "HIGH",
+    "tags": [
+      "TEST_ONLY",
+      "share-sheet-phishing",
+      "rfc2606"
+    ],
+    "environment_scope": "LAB_AND_TEST_ONLY",
+    "is_test_fixture": true,
+    "attack_technique_id": "T1660",
+    "description": "Reserved RFC 2606 .test URL for safe Android share-sheet phishing analysis."
+  },
+  {
+    "ioc_id": "fixture-test-otp-001",
+    "indicator_type": "url",
+    "value": "https://urgent-family-wire.example.test/otp-claim",
+    "source_id": "adonai-safe-test-fixture",
+    "confidence": 1.0,
+    "severity": "CRITICAL",
+    "tags": [
+      "TEST_ONLY",
+      "account-compromise-lure",
+      "otp-scam"
+    ],
+    "environment_scope": "LAB_AND_TEST_ONLY",
+    "is_test_fixture": true,
+    "attack_technique_id": "T1566.002",
+    "description": "Reserved RFC 2606 URL for testing trusted-contact compromise override."
+  },
+  {
+    "ioc_id": "fixture-test-ip-001",
+    "indicator_type": "ip",
+    "value": "198.51.100.42",
+    "source_id": "adonai-safe-test-fixture",
+    "confidence": 1.0,
+    "severity": "HIGH",
+    "tags": [
+      "TEST_ONLY",
+      "rfc5737-test-net-2",
+      "synthetic-telemetry"
+    ],
+    "environment_scope": "LAB_AND_TEST_ONLY",
+    "is_test_fixture": true,
+    "attack_technique_id": "T1071.001",
+    "description": "Reserved RFC 5737 TEST-NET-2 IPv4 address for safe lab IOC correlation."
+  },
+  {
+    "ioc_id": "fixture-test-hash-001",
+    "indicator_type": "sha256",
+    "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "source_id": "adonai-safe-test-fixture",
+    "confidence": 1.0,
+    "severity": "HIGH",
+    "tags": [
+      "TEST_ONLY",
+      "synthetic-artifact-hash"
+    ],
+    "environment_scope": "LAB_AND_TEST_ONLY",
+    "is_test_fixture": true,
+    "attack_technique_id": "T1204.002",
+    "description": "Synthetic non-executable test hash for verifying artifact scanner."
+  }
+]

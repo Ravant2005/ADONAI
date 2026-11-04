@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ADONAI — Personal Cyber-Intelligence & 3D Lab</title>
+  <link rel="stylesheet" href="/static/css/adonai.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand-header">
+      <div class="brand-kicker">PERSONAL CYBER INTELLIGENCE</div>
+      <div class="brand-title">ADONAI</div>
+      <div class="brand-sub">Mac Intelligence Brain &bull; 3D Cyber Range</div>
+    </div>
+    <ul class="nav-list" id="navList">
+      <li class="nav-item active" data-view="view-overview"><span><span class="nav-num">01</span>Overview</span><span>&rsaquo;</span></li>
+      <li class="nav-item" data-view="view-range"><span><span class="nav-num">02</span>3D Cyber Range (1,000)</span><span>&rsaquo;</span></li>
+      <li class="nav-item" data-view="view-devices"><span><span class="nav-num">03</span>Endpoint &amp; App Registry</span><span>&rsaquo;</span></li>
+      <li class="nav-item" data-view="view-events"><span><span class="nav-num">04</span>Live Event Stream</span><span>&rsaquo;</span></li>
+      <li class="nav-item" data-view="view-intel"><span><span class="nav-num">05</span>Threat Intelligence</span><span>&rsaquo;</span></li>
+      <li class="nav-item" data-view="view-rules"><span><span class="nav-num">06</span>Rules &amp; ATT&amp;CK Explorer</span><span>&rsaquo;</span></li>
+      <li class="nav-item" data-view="view-incidents"><span><span class="nav-num">07</span>Incidents &amp; Evidence</span><span>&rsaquo;</span></li>
+      <li class="nav-item" data-view="view-scenarios"><span><span class="nav-num">08</span>Safe Scenarios &amp; Replay</span><span>&rsaquo;</span></li>
+      <li class="nav-item" data-view="view-eval"><span><span class="nav-num">09</span>Evaluation Metrics</span><span>&rsaquo;</span></li>
+      <li class="nav-item" data-view="view-llm"><span><span class="nav-num">10</span>Local LLM Analyst</span><span>&rsaquo;</span></li>
+      <li class="nav-item" data-view="view-sources"><span><span class="nav-num">11</span>Sources &amp; Datasets</span><span>&rsaquo;</span></li>
+      <li class="nav-item" data-view="view-privacy"><span><span class="nav-num">12</span>Privacy, Audit &amp; Health</span><span>&rsaquo;</span></li>
+      <li class="nav-item" data-view="view-guardian"><span><span class="nav-num">13</span>🛡️ Guardian Media Vault</span><span>&rsaquo;</span></li>
+    </ul>
+    <div class="sidebar-footer">
+      <div><strong>Environment Separation:</strong> REAL &ne; LAB</div>
+      <div style="margin-top:6px;"><a href="/mobile" target="_blank" style="color:var(--primary);text-decoration:none;font-weight:700;">&rarr; Open Android Companion UI</a></div>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <header class="topbar">
+      <div class="topbar-title" id="currentViewTitle">01 / SYSTEM OVERVIEW &amp; EXPOSURE SUMMARY</div>
+      <div class="topbar-controls">
+        <span class="mono" style="color:var(--muted);">Environment Filter:</span>
+        <button class="btn btn-primary" id="filterAllBtn" onclick="setEnvFilter('')">ALL</button>
+        <button class="btn" id="filterRealBtn" onclick="setEnvFilter('REAL')">REAL DEVICE</button>
+        <button class="btn" id="filterLabBtn" onclick="setEnvFilter('LAB')">DEMO / LAB</button>
+        <button class="btn" onclick="refreshAll()">&#x21bb; Sync Now</button>
+      </div>
+    </header>
+
+    <main class="content-pane">
+      <!-- 01 OVERVIEW -->
+      <section class="view-section active" id="view-overview">
+        <div class="honesty-banner">
+          <strong>Evidence-First Boundary Notice:</strong> Every number below is computed directly from SQLite tables (<code>REAL</code> device observations vs <code>LAB</code> simulation records). ADONAI never claims TLS payload decryption or unrestricted private WhatsApp/app database access.
+        </div>
+        <div class="kpi-grid" id="overviewKpis"></div>
+        <div class="two-col">
+          <div class="card">
+            <div class="section-h2">Quick Contextual Scam &amp; Share-Sheet Analyzer</div>
+            <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Test ADONAI's deterministic link, OTP solicitation, and trusted-contact override engine:</p>
+            <div style="display:grid;gap:10px;">
+              <input class="input-field" id="quickUrl" placeholder="Optional URL (e.g., https://secure-verify-auth.example.test/login)" />
+              <textarea class="textarea-field" id="quickText" rows="3" placeholder="Message text (e.g., Urgent: reply with your 6-digit OTP verification code)"></textarea>
+              <select class="select-field" id="quickSender">
+                <option value="rec-unknown-03">Sender: Unknown External Number (+1-555-0199-882) [UNKNOWN]</option>
+                <option value="rec-mom-01">Sender: Mom (+91-98400-11223) [TRUSTED FAMILY]</option>
+                <option value="rec-colleague-02">Sender: Arjun Mehta [KNOWN COLLEAGUE]</option>
+              </select>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="btn btn-primary" onclick="submitQuickAnalyze()">Analyze Shared Content</button>
+                <button class="btn" onclick="fillPreset('benign')">Load Benign Family Preset</button>
+                <button class="btn" onclick="fillPreset('otp')">Load OTP Scam Preset</button>
+                <button class="btn" onclick="fillPreset('compromise')">Load Trusted Compromise Preset</button>
+              </div>
+              <div id="quickAnalyzeResult" class="mono" style="margin-top:8px;padding:10px;background:var(--bg);border:1px solid var(--border);display:none;"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="section-h2">Recent Incidents &amp; Exposure Narrative</div>
+            <div id="overviewIncidentsList"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 02 3D CYBER RANGE -->
+      <section class="view-section" id="view-range">
+        <div class="honesty-banner">
+          <strong>DEMO / LAB VISUALIZATION NOTICE:</strong> The 1,000 orbital nodes represent actual registered <code>SimulatedEndpoint</code> identities (`sim-ep-0001` to `sim-ep-1000`) stored in SQLite, not 1,000 physical OS installations. Attack trajectories render <strong>only</strong> when the scenario runner emits a real lab event.
+        </div>
+        <div class="range-layout">
+          <div>
+            <div class="canvas-box">
+              <canvas id="cyberRangeCanvas" width="920" height="520"></canvas>
+              <div class="canvas-overlay-top">
+                <div class="canvas-legend">
+                  <div><strong>3D ORBITAL TOPOLOGY</strong> (Drag to Rotate &bull; Click Node to Inspect)</div>
+                  <div style="margin-top:4px;color:var(--muted);">Center Core: Mac Intelligence Brain | 5 Sector Rings &times; 200 Nodes = 1,000 Registered Identities</div>
+                </div>
+                <div class="canvas-legend" id="rangeStateBadge">STATE: READY</div>
+              </div>
+            </div>
+            <div class="card" style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+              <div>
+                <strong>Range Controls:</strong>
+                <button class="btn" onclick="controlRange('PAUSE')">Pause</button>
+                <button class="btn" onclick="controlRange('RESUME')">Resume</button>
+                <button class="btn" onclick="controlRange('STOP')">Stop</button>
+                <button class="btn" onclick="controlRange('RESET')">Reset All Lab State</button>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <select class="select-field" id="rangeScenarioSelect" style="width:280px;"></select>
+                <input class="input-field" id="rangeTargetEp" value="sim-ep-0001" style="width:120px;" />
+                <button class="btn btn-primary" onclick="triggerRangeScenario(false)">Emit Scenario</button>
+                <button class="btn" onclick="triggerRangeScenario(true)">Replay on Next Node</button>
+              </div>
+            </div>
+          </div>
+          <div class="card" id="selectedNodePanel">
+            <div class="section-h2">Selected Node Inspector</div>
+            <div id="nodeInspectorContent" style="font-size:13px;color:var(--muted);">
+              Click any node in the 3D Cyber Range or run a scenario to inspect its registered identity, virtual IP, telemetry events, and rule detections.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 ENDPOINT & APP REGISTRY -->
+      <section class="view-section" id="view-devices">
+        <div class="two-col">
+          <div class="card">
+            <div class="section-h2">Authenticated Android-to-Mac Pairing</div>
+            <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Generate a short-lived 6-digit pairing code &amp; QR payload for LAN authentication, or revoke an existing paired phone.</p>
+            <button class="btn btn-primary" onclick="generatePairingCode()">Generate Short-Lived Pairing Code</button>
+            <div id="pairingBox" style="margin-top:12px;display:none;padding:12px;background:var(--bg);border:1px solid var(--primary);"></div>
+            <h3 style="font-size:14px;margin:16px 0 8px 0;">Registered REAL Devices</h3>
+            <div id="devicesTableContainer"></div>
+          </div>
+          <div class="card">
+            <div class="section-h2">Android PackageManager App &amp; Permission Inventory</div>
+            <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Sourced from Android <code>PackageManager</code> APIs on the paired device. Highlights disproportionate permission combinations:</p>
+            <div id="appInventoryContainer"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04 LIVE EVENT STREAM -->
+      <section class="view-section" id="view-events">
+        <div class="card">
+          <div class="section-h2">Normalized Security Event Timeline (OBSERVED / INFERRED / CONFIRMED)</div>
+          <div id="eventStreamTable"></div>
+        </div>
+      </section>
+
+      <!-- 05 THREAT INTELLIGENCE -->
+      <section class="view-section" id="view-intel">
+        <div class="two-col">
+          <div class="card">
+            <div class="section-h2">Production Threat Indicators (Normalized IOCs)</div>
+            <div id="prodIocsTable"></div>
+          </div>
+          <div class="card">
+            <div class="section-h2">Isolated Safe Test Fixtures (<code>TEST_ONLY</code>)</div>
+            <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">Uses RFC 2606 (<code>.test</code>, <code>.invalid</code>) and RFC 5737 reserved IPs so lab tests never pollute production alerts.</p>
+            <div id="testFixturesTable"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 06 RULES & ATT&CK EXPLORER -->
+      <section class="view-section" id="view-rules">
+        <div class="card">
+          <div class="section-h2">10-Layer Deterministic Detection Rules &amp; Sigma/YARA Signatures</div>
+          <div id="rulesTable"></div>
+        </div>
+        <div class="card">
+          <div class="section-h2">MITRE ATT&amp;CK v15.1 &amp; D3FEND Countermeasure Mappings</div>
+          <div id="techniquesTable"></div>
+        </div>
+      </section>
+
+      <!-- 07 INCIDENTS & EVIDENCE -->
+      <section class="view-section" id="view-incidents">
+        <div class="card">
+          <div class="section-h2">Evidence-Linked Incidents (Answering: WHAT? WHERE? WHY? NOW WHAT?)</div>
+          <div id="incidentsFullList"></div>
+        </div>
+      </section>
+
+      <!-- 08 SAFE SCENARIOS & REPLAY -->
+      <section class="view-section" id="view-scenarios">
+        <div class="card">
+          <div class="section-h2">Safe Cyber-Range Scenario Catalogue &amp; Deterministic Replay</div>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:14px;">All 10 scenarios run strictly inside the isolated <code>LAB</code> environment with preflight safety checks. Zero live exploits or host malware execution.</p>
+          <div id="scenariosCatalogueTable"></div>
+        </div>
+      </section>
+
+      <!-- 09 EVALUATION METRICS -->
+      <section class="view-section" id="view-eval">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <div>
+              <div class="section-h2" style="margin-bottom:4px;">Measured Ground-Truth Detection Benchmark</div>
+              <div style="font-size:12px;color:var(--muted);">Computes actual Precision, Recall, F1, False-Positive Rate, and Mean Time-to-Detect (ms) across all 10 labeled scenarios.</div>
+            </div>
+            <button class="btn btn-primary" onclick="runFullEvaluation()">Run 10-Scenario Benchmark Suite Now</button>
+          </div>
+          <div id="evalMetricsSummary"></div>
+          <div id="evalPerScenarioTable" style="margin-top:16px;"></div>
+        </div>
+      </section>
+
+      <!-- 10 LOCAL LLM ANALYST -->
+      <section class="view-section" id="view-llm">
+        <div class="two-col">
+          <div class="card">
+            <div class="section-h2">Local LLM Runtime &amp; Deterministic Fallback Status</div>
+            <div id="llmStatusBox"></div>
+          </div>
+          <div class="card">
+            <div class="section-h2">Analyst Guardrails &amp; Schema Contract</div>
+            <ul style="padding-left:18px;font-size:13px;color:var(--muted);display:grid;gap:8px;">
+              <li><strong style="color:var(--text);">No Autonomous Blocking:</strong> The LLM is an analyst layer only; deterministic rules make all detection decisions.</li>
+              <li><strong style="color:var(--text);">Mandatory Secret Redaction:</strong> Bearer tokens, passwords, and card numbers are redacted via <code>redact_secrets()</code> before prompt construction.</li>
+              <li><strong style="color:var(--text);">Strict JSON-Schema Validation:</strong> Output must cite internal <code>event_id</code>, <code>detection_id</code>, and <code>rule_id</code> records.</li>
+              <li><strong style="color:var(--text);">100% Offline Resilience:</strong> When Ollama (<code>127.0.0.1:11434</code>) is offline, ADONAI seamlessly uses its deterministic schema-validated explanation engine.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 11 SOURCES & DATASETS -->
+      <section class="view-section" id="view-sources">
+        <div class="card">
+          <div class="section-h2">Threat Intelligence Source Registry &amp; Ingestion Health (18 Sources)</div>
+          <div id="sourcesHealthTable"></div>
+        </div>
+      </section>
+
+      <!-- 12 PRIVACY, AUDIT & HEALTH -->
+      <section class="view-section" id="view-privacy">
+        <div class="two-col">
+          <div class="card">
+            <div class="section-h2">Granular Consent Center &amp; Data Retention Controls</div>
+            <div id="consentControlsList"></div>
+            <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);display:flex;gap:10px;">
+              <button class="btn" onclick="purgeData('LAB')">Purge All LAB Telemetry</button>
+              <button class="btn" onclick="purgeData('REAL')">Purge All REAL Telemetry</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="section-h2">Trusted Contacts Context Configuration</div>
+            <div id="trustedContactsTable"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-h2">Immutable Security Audit Log</div>
+          <div id="auditLogsTable"></div>
+        </div>
+      </section>
+
+      <!-- 13 GUARDIAN MEDIA VAULT -->
+      <section class="view-section" id="view-guardian">
+        <div class="honesty-banner">
+          <strong>🛡️ ADONAI Guardian — Media Authenticity & Fraud Detection:</strong>
+          Truth-first verification. We verify what's authentic — everything else is suspect.
+          Stage 1: Cryptographic watermark + blockchain. Stage 2: Web intelligence. Stage 3: AI forensic analysis.
+        </div>
+
+        <!-- Blockchain Status -->
+        <div class="kpi-grid" id="guardianKpis"></div>
+
+        <div class="two-col">
+          <!-- Live Verify Panel -->
+          <div class="card">
+            <div class="section-h2">🔍 Verify Media Authenticity</div>
+            <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">
+              Paste context text (e.g., the WhatsApp message accompanying the media) and optionally upload a file to run the full 3-stage Guardian verification pipeline.
+            </p>
+            <div style="display:grid;gap:10px;">
+              <select class="input-field" id="guardianMediaType" style="background:var(--surface);color:var(--text);border:1px solid var(--border);padding:8px 12px;border-radius:4px;">
+                <option value="TEXT">Text / Message Analysis</option>
+                <option value="IMAGE">Image</option>
+                <option value="AUDIO">Audio</option>
+                <option value="VIDEO">Video</option>
+              </select>
+              <textarea class="input-field" id="guardianContextText" rows="4"
+                placeholder="Paste the message, scheme description, or any context here (e.g. 'My friend sent me an audio saying send ₹50,000 urgently...')..."
+                style="resize:vertical;"></textarea>
+              <input type="file" id="guardianFileInput" accept="image/*,audio/*,video/*"
+                style="color:var(--text);font-size:12px;" />
+              <button class="btn btn-primary" onclick="runGuardianVerify()">▶ Run Guardian Verification</button>
+            </div>
+            <div id="guardianVerifyResult" style="margin-top:16px;"></div>
+          </div>
+
+          <!-- Blockchain State -->
+          <div class="card">
+            <div class="section-h2">⛓️ Local Blockchain Registry</div>
+            <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">
+              Every media file captured by Guardian-registered cameras is anchored here. Each block is SHA-256 chained for tamper detection.
+            </p>
+            <div id="guardianBlockchainState"></div>
+            <button class="btn" style="margin-top:12px;" onclick="loadGuardianBlockchain()">↺ Refresh Chain</button>
+          </div>
+        </div>
+
+        <!-- Technology Families Reference -->
+        <div class="card">
+          <div class="section-h2">🔬 Detection Technology Families (10 Active)</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:12px;">
+            <div class="card" style="padding:14px;">
+              <div style="color:var(--primary);font-weight:700;font-size:11px;text-transform:uppercase;">1. Statistical Forensics</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:4px;">Perplexity analysis, burstiness, token probability (PPL, DetectGPT, stylometry)</div>
+            </div>
+            <div class="card" style="padding:14px;">
+              <div style="color:var(--primary);font-weight:700;font-size:11px;text-transform:uppercase;">2. ML Classification</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:4px;">Feature-based human vs AI-generated content classification with calibrated confidence</div>
+            </div>
+            <div class="card" style="padding:14px;">
+              <div style="color:var(--primary);font-weight:700;font-size:11px;text-transform:uppercase;">3. Deep Learning (CNN/ViT)</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:4px;">EfficientNet, XceptionNet, Swin Transformer, CLIP-based image classifiers</div>
+            </div>
+            <div class="card" style="padding:14px;">
+              <div style="color:var(--primary);font-weight:700;font-size:11px;text-transform:uppercase;">4. Frequency-Domain Analysis</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:4px;">FFT, DCT, DWT — detects AI upsampling artifacts and unnatural frequency distributions</div>
+            </div>
+            <div class="card" style="padding:14px;">
+              <div style="color:var(--primary);font-weight:700;font-size:11px;text-transform:uppercase;">5. Signal Processing</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:4px;">MFCC, CQCC, LFCC, spectrogram analysis — detects vocoder & synthesis artifacts</div>
+            </div>
+            <div class="card" style="padding:14px;">
+              <div style="color:var(--primary);font-weight:700;font-size:11px;text-transform:uppercase;">6. Watermark Detection</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:4px;">DCT/DWT embed search, spread-spectrum audio, neural audio watermark extraction</div>
+            </div>
+            <div class="card" style="padding:14px;">
+              <div style="color:var(--primary);font-weight:700;font-size:11px;text-transform:uppercase;">7. Digital Provenance</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:4px;">Blockchain hash chain verification, modification record checks, capture metadata</div>
+            </div>
+            <div class="card" style="padding:14px;">
+              <div style="color:var(--primary);font-weight:700;font-size:11px;text-transform:uppercase;">8. Anomaly Detection</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:4px;">Statistical deviation from natural data distributions — pixel, spectral, temporal</div>
+            </div>
+            <div class="card" style="padding:14px;">
+              <div style="color:var(--primary);font-weight:700;font-size:11px;text-transform:uppercase;">9. Model Fingerprinting</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:4px;">Generator-specific artifact identification (GAN checkerboard, diffusion AEROBLADE)</div>
+            </div>
+            <div class="card" style="padding:14px;">
+              <div style="color:var(--primary);font-weight:700;font-size:11px;text-transform:uppercase;">10. Ensemble Learning</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:4px;">Weighted multi-model voting combining all 9 families for final fraud probability</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Verification History -->
+        <div class="card">
+          <div class="section-h2">📋 Verification History</div>
+          <div id="guardianVerdictsTable"></div>
+          <button class="btn" style="margin-top:12px;" onclick="loadGuardianVerdicts()">↺ Refresh History</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+  <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

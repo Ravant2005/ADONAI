@@ -1,0 +1,64 @@
+- id: sigma-adonai-001
+  title: Suspicious DNS Query to High-Risk or Test C2 Domain
+  status: stable
+  version: 1.2.0
+  logsource:
+    category: dns
+    product: adonai
+  detection:
+    condition: domain endswith '.invalid' or ioc_match == true
+  level: high
+  attack_technique_id: T1071.004
+  description: Detects DNS queries matching configured IOC domains or reserved lab
+    C2 emulation domains.
+- id: sigma-adonai-002
+  title: Repeated Authentication Failures Followed by Session Activity
+  status: stable
+  version: 1.1.0
+  logsource:
+    category: auth
+    product: adonai
+  detection:
+    condition: failed_login_count >= 5 within 120s
+  level: high
+  attack_technique_id: T1110.001
+  description: Identifies rapid brute-force authentication failure telemetry sequences.
+- id: sigma-adonai-003
+  title: Process Execution Followed by Immediate External Socket
+  status: stable
+  version: 1.0.4
+  logsource:
+    category: process_network
+    product: adonai
+  detection:
+    condition: process_spawn followed_by external_connect within 10s
+  level: medium
+  attack_technique_id: T1059
+  description: Correlates unusual process spawn with immediate outbound network socket
+    metadata.
+- id: sigma-adonai-004
+  title: Android High-Risk Permission Combination Escalation
+  status: stable
+  version: 1.3.0
+  logsource:
+    category: android_package
+    product: adonai
+  detection:
+    condition: permissions contains READ_SMS and (BIND_ACCESSIBILITY_SERVICE or SYSTEM_ALERT_WINDOW)
+  level: high
+  attack_technique_id: T1404
+  description: Flags packages holding invasive permission combinations often abused
+    by stalkerware or banking trojans.
+- id: sigma-adonai-005
+  title: Contextual Phishing / OTP Solicitation Detection
+  status: stable
+  version: 1.4.0
+  logsource:
+    category: message_analysis
+    product: adonai
+  detection:
+    condition: contains_otp_solicitation or phishing_lexical_score >= 0.75
+  level: critical
+  attack_technique_id: T1660
+  description: Detects OTP/verification code solicitation and credential phishing
+    lures, overriding contact trust suppression when strong indicators exist.

@@ -1,0 +1,71 @@
+{
+  "timestamp_utc": "2026-11-04T14:18:54.044438+00:00",
+  "product": "ADONAI Personal Cyber-Intelligence System",
+  "host": {
+    "os": "Darwin",
+    "release": "25.5.0",
+    "machine": "arm64",
+    "processor": "arm",
+    "cpu_count": 10,
+    "memory_total_gb": 8.0,
+    "disk_free_gb": 54.17,
+    "disk_total_gb": 460.38
+  },
+  "toolchains": {
+    "python": {
+      "available": true,
+      "version": "3.14.7",
+      "path": "/opt/homebrew/opt/python@3.14/bin/python3.14"
+    },
+    "node": {
+      "available": true,
+      "path": "/opt/homebrew/opt/node@20/bin/node",
+      "version": "v20.20.2"
+    },
+    "npm": {
+      "available": true,
+      "path": "/opt/homebrew/opt/node@20/bin/npm",
+      "version": "10.8.2"
+    },
+    "java": {
+      "available": true,
+      "path": "/usr/bin/java",
+      "version": "installed"
+    },
+    "adb": {
+      "available": false,
+      "path": null,
+      "version": null
+    },
+    "gradle": {
+      "available": false,
+      "path": null,
+      "version": null
+    },
+    "docker": {
+      "available": true,
+      "path": "/usr/local/bin/docker",
+      "version": "WARNING: Error loading config file: open /Users/benny/.docker/config.json: operation not permitted"
+    },
+    "podman": {
+      "available": false,
+      "path": null,
+      "version": null
+    }
+  },
+  "local_llm": {
+    "configured_endpoint": "http://127.0.0.1:11434",
+    "reachable": false,
+    "fallback_mode": "DETERMINISTIC_SCHEMA_VALIDATED"
+  },
+  "ports": {
+    "8410_api_available": true,
+    "11434_ollama_available": true
+  },
+  "recommended_profile": {
+    "sqlite_wal_mode": true,
+    "max_simulated_endpoints": 1000,
+    "event_queue_bound": 5000,
+    "llm_mode": "DETERMINISTIC_SCHEMA_VALIDATED"
+  }
+}

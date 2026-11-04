@@ -1,0 +1,5 @@
+FROM python:3.11-slim
+WORKDIR /app
+COPY . /app
+EXPOSE 8410
+CMD ["uvicorn", "backend.main:app", "--host", "127.0.0.1", "--port", "8410"]

@@ -1,0 +1,43 @@
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+dist/
+
+# SQLite databases & temp journals
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+backend/adonai_pilot.db*
+
+# Android / Gradle
+.gradle/
+build/
+android-agent/build/
+android-agent/app/build/
+android-agent/.gradle/
+android-agent/local.properties
+.idea/
+*.iml
+.navigation/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Environment and sensitive keys
+.env
+.env.local
+secrets.json
+google-services.json

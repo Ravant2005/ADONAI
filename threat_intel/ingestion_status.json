@@ -1,0 +1,103 @@
+{
+  "last_run_utc": "2026-11-04T09:23:45.776232+00:00",
+  "total_registered_sources": 18,
+  "ingested_local_sources": 13,
+  "offline_or_key_required_sources": 5,
+  "production_ioc_count": 5,
+  "test_fixture_ioc_count": 5,
+  "attack_technique_count": 7,
+  "sigma_rule_count": 5,
+  "normalized_iocs_sha256": "e01164e78a1e5b0f552bc6d1f9a3519b098db493afbdb5670bd6e4a91cd3b90a",
+  "source_statuses": {
+    "mitre-attack-stix": {
+      "status": "INGESTED_LOCAL_BUNDLE",
+      "records": 14,
+      "version": "v15.1"
+    },
+    "mitre-d3fend": {
+      "status": "INGESTED_LOCAL_BUNDLE",
+      "records": 10,
+      "version": "v1.3.0"
+    },
+    "cisa-kev": {
+      "status": "INGESTED_LOCAL_SNAPSHOT",
+      "records": 6,
+      "version": "2026.11-snapshot"
+    },
+    "nist-nvd": {
+      "status": "INGESTED_LOCAL_SNAPSHOT",
+      "records": 6,
+      "version": "api-v2.0"
+    },
+    "cisa-advisories": {
+      "status": "INGESTED_LOCAL_SNAPSHOT",
+      "records": 4,
+      "version": "2026-Q4"
+    },
+    "urlhaus-abusech": {
+      "status": "INGESTED_LOCAL_SNAPSHOT",
+      "records": 5,
+      "version": "2026-11-curated"
+    },
+    "phishtank": {
+      "status": "INGESTED_LOCAL_SNAPSHOT",
+      "records": 5,
+      "version": "2026-11-curated"
+    },
+    "malwarebazaar-hashes": {
+      "status": "INGESTED_LOCAL_SNAPSHOT",
+      "records": 4,
+      "version": "2026-11-hashes"
+    },
+    "sigmahq-rules": {
+      "status": "INGESTED_LOCAL_BUNDLE",
+      "records": 8,
+      "version": "r2026-10"
+    },
+    "yara-curated": {
+      "status": "INGESTED_LOCAL_BUNDLE",
+      "records": 5,
+      "version": "v4.5-curated"
+    },
+    "zeek-suricata-EmergingThreats": {
+      "status": "INGESTED_LOCAL_BUNDLE",
+      "records": 6,
+      "version": "et-open-2026"
+    },
+    "owasp-top10-asvs": {
+      "status": "INGESTED_LOCAL_BUNDLE",
+      "records": 10,
+      "version": "2024/2026-MASVS"
+    },
+    "android-macos-bulletins": {
+      "status": "INGESTED_LOCAL_SNAPSHOT",
+      "records": 6,
+      "version": "2026-11-patch-level"
+    },
+    "misp-community": {
+      "status": "OFFLINE_OR_API_KEY_REQUIRED",
+      "records": 0,
+      "version": "connector-v1"
+    },
+    "spamhaus-drop": {
+      "status": "OFFLINE_OR_API_KEY_REQUIRED",
+      "records": 0,
+      "version": "connector-v1"
+    },
+    "abuseipdb": {
+      "status": "OFFLINE_OR_API_KEY_REQUIRED",
+      "records": 0,
+      "version": "api-v2"
+    },
+    "hibp-kanonymity": {
+      "status": "OFFLINE_OR_API_KEY_REQUIRED",
+      "records": 0,
+      "version": "api-v3"
+    },
+    "opencti-connector": {
+      "status": "OFFLINE_OR_API_KEY_REQUIRED",
+      "records": 0,
+      "version": "connector-v1"
+    }
+  }
+}

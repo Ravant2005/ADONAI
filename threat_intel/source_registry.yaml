@@ -1,0 +1,328 @@
+schema_version: 1.0.0
+product: ADONAI
+updated_at: '2026-11-04T09:15:00Z'
+policy: Never fabricate indicators. Separate production intelligence from TEST_ONLY
+  fixtures. Respect rate limits and terms.
+sources:
+- source_id: mitre-attack-stix
+  name: MITRE ATT&CK Enterprise & Mobile STIX
+  category: attack_taxonomy
+  data_type: STIX 2.1 Tactics, Techniques, Mitigations
+  access_method: Curated Local Bundle + GitHub STIX JSON Connector
+  url: https://github.com/mitre-attack/attack-stix-data
+  license: Apache-2.0 / MITRE Terms of Use
+  update_frequency: quarterly
+  version: v15.1
+  status: INGESTED_LOCAL_BUNDLE
+  record_count: 14
+  confidence: 0.98
+  rate_limit_policy: Static release bundle; max 1 check/24h
+- source_id: mitre-d3fend
+  name: MITRE D3FEND Countermeasures
+  category: defensive_taxonomy
+  data_type: Defensive Technique Ontology & Mappings
+  access_method: Curated Local Bundle + JSON-LD Connector
+  url: https://d3fend.mitre.org/
+  license: MITRE D3FEND Public License
+  update_frequency: quarterly
+  version: v1.3.0
+  status: INGESTED_LOCAL_BUNDLE
+  record_count: 10
+  confidence: 0.98
+  rate_limit_policy: Static ontology bundle
+- source_id: cisa-kev
+  name: CISA Known Exploited Vulnerabilities (KEV)
+  category: vulnerability_intel
+  data_type: Actively Exploited CVE Catalog
+  access_method: CISA JSON Feed + Local Curated Snapshot
+  url: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
+  license: US Government Public Domain (CC0)
+  update_frequency: daily
+  version: 2026.11-snapshot
+  status: INGESTED_LOCAL_SNAPSHOT
+  record_count: 6
+  confidence: 0.99
+  rate_limit_policy: Max 1 poll per 6 hours
+- source_id: nist-nvd
+  name: NIST National Vulnerability Database (NVD)
+  category: vulnerability_intel
+  data_type: CVE, CVSS v3.1, CWE, CPE Metadata
+  access_method: REST API v2.0 (NVD_API_KEY optional)
+  url: https://nvd.nist.gov/developers/vulnerabilities
+  license: US Government Public Domain
+  update_frequency: daily
+  version: api-v2.0
+  status: INGESTED_LOCAL_SNAPSHOT
+  record_count: 6
+  confidence: 0.95
+  rate_limit_policy: 5 req/30s without key; 50 req/30s with NVD_API_KEY
+- source_id: cisa-advisories
+  name: CISA Cybersecurity Advisories & Alerts
+  category: advisories
+  data_type: CSAF / RSS Threat Advisories
+  access_method: CSAF JSON / Local Advisory Snapshot
+  url: https://www.cisa.gov/news-events/cybersecurity-advisories
+  license: US Government Public Domain
+  update_frequency: daily
+  version: 2026-Q4
+  status: INGESTED_LOCAL_SNAPSHOT
+  record_count: 4
+  confidence: 0.95
+  rate_limit_policy: Max 1 poll per hour
+- source_id: urlhaus-abusech
+  name: abuse.ch URLhaus Malicious URL Feed
+  category: ioc_feed
+  data_type: Malware Distribution URLs & Domains
+  access_method: CSV/JSON Feed Connector + Curated Snapshot
+  url: https://urlhaus.abuse.ch/api/
+  license: CC0 1.0 Universal (Public Domain)
+  update_frequency: hourly
+  version: 2026-11-curated
+  status: INGESTED_LOCAL_SNAPSHOT
+  record_count: 5
+  confidence: 0.92
+  rate_limit_policy: No more than 1 fetch every 5 minutes
+- source_id: phishtank
+  name: PhishTank Verified Phishing Feed
+  category: ioc_feed
+  data_type: Verified Phishing URLs
+  access_method: JSON Feed (PHISHTANK_APP_KEY optional)
+  url: https://phishtank.org/developer_info.php
+  license: PhishTank Terms of Use (Non-commercial/Research)
+  update_frequency: hourly
+  version: 2026-11-curated
+  status: INGESTED_LOCAL_SNAPSHOT
+  record_count: 5
+  confidence: 0.9
+  rate_limit_policy: Respect HTTP Retry-After & User-Agent header
+- source_id: malwarebazaar-hashes
+  name: abuse.ch MalwareBazaar Hash Metadata
+  category: ioc_feed
+  data_type: SHA-256 Malware Hashes & Signer Metadata (No Binaries)
+  access_method: Hash-only JSON Connector
+  url: https://bazaar.abuse.ch/api/
+  license: CC0 1.0 Universal
+  update_frequency: daily
+  version: 2026-11-hashes
+  status: INGESTED_LOCAL_SNAPSHOT
+  record_count: 4
+  confidence: 0.96
+  rate_limit_policy: Metadata only; binary download strictly disabled
+- source_id: sigmahq-rules
+  name: SigmaHQ Detection Rules
+  category: detection_rules
+  data_type: Generic Log & Event Detection Rules
+  access_method: Local Curated YAML Bundle
+  url: https://github.com/SigmaHQ/sigma
+  license: Detection Rule License (DRL) 1.1
+  update_frequency: weekly
+  version: r2026-10
+  status: INGESTED_LOCAL_BUNDLE
+  record_count: 8
+  confidence: 0.94
+  rate_limit_policy: Local repository sync
+- source_id: yara-curated
+  name: Curated YARA File & Artifact Rules
+  category: detection_rules
+  data_type: Pattern Matching Rules for User-Selected Artifacts
+  access_method: Local Curated .yar Bundle
+  url: https://virustotal.github.io/yara/
+  license: BSD-3-Clause / Apache-2.0
+  update_frequency: weekly
+  version: v4.5-curated
+  status: INGESTED_LOCAL_BUNDLE
+  record_count: 5
+  confidence: 0.93
+  rate_limit_policy: Local execution on explicit user/lab file selection only
+- source_id: zeek-suricata-EmergingThreats
+  name: Emerging Threats Open (Suricata / Zeek Signatures)
+  category: network_rules
+  data_type: Network Metadata & DNS Signatures
+  access_method: Local Rule Subset
+  url: https://rules.emergingthreats.net/
+  license: BSD / MIT Open Ruleset
+  update_frequency: daily
+  version: et-open-2026
+  status: INGESTED_LOCAL_BUNDLE
+  record_count: 6
+  confidence: 0.91
+  rate_limit_policy: Daily batch pull when online
+- source_id: owasp-top10-asvs
+  name: OWASP Top 10 & Mobile ASVS Control Taxonomy
+  category: security_controls
+  data_type: Application Security Risks & Verification Controls
+  access_method: Embedded Control Mapping
+  url: https://owasp.org/www-project-top-ten/
+  license: CC BY-SA 4.0
+  update_frequency: annual
+  version: 2024/2026-MASVS
+  status: INGESTED_LOCAL_BUNDLE
+  record_count: 10
+  confidence: 0.99
+  rate_limit_policy: Static reference taxonomy
+- source_id: android-macos-bulletins
+  name: Android & Apple macOS Security Bulletins
+  category: platform_bulletins
+  data_type: OS Patch Level & Platform CVE Context
+  access_method: Curated OS Patch Metadata
+  url: https://source.android.com/docs/security/bulletin
+  license: Apache-2.0 / Public Advisory
+  update_frequency: monthly
+  version: 2026-11-patch-level
+  status: INGESTED_LOCAL_SNAPSHOT
+  record_count: 6
+  confidence: 0.97
+  rate_limit_policy: Monthly check
+- source_id: misp-community
+  name: MISP Threat Sharing Feed Connector
+  category: ioc_feed
+  data_type: Community OSINT Indicators
+  access_method: REST / PyMISP Compatible Connector
+  url: https://www.misp-project.org/feeds/
+  license: TLP:CLEAR / OSINT Feed Terms
+  update_frequency: daily
+  version: connector-v1
+  status: OFFLINE_OR_API_KEY_REQUIRED
+  record_count: 0
+  confidence: 0.85
+  rate_limit_policy: Requires MISP_URL and MISP_API_KEY env vars
+- source_id: spamhaus-drop
+  name: Spamhaus DROP / Domain Reputation
+  category: ioc_feed
+  data_type: Dont Route Or Peer CIDR List
+  access_method: HTTPS Feed Connector
+  url: https://www.spamhaus.org/drop/
+  license: Spamhaus Non-Commercial Data Terms
+  update_frequency: daily
+  version: connector-v1
+  status: OFFLINE_OR_API_KEY_REQUIRED
+  record_count: 0
+  confidence: 0.94
+  rate_limit_policy: Max 1 request per hour; no redistribution
+- source_id: abuseipdb
+  name: AbuseIPDB IP Reputation API
+  category: ioc_feed
+  data_type: Crowdsourced IP Abuse Reports
+  access_method: REST API v2 (Requires ABUSEIPDB_API_KEY)
+  url: https://docs.abuseipdb.com/
+  license: AbuseIPDB API Terms of Service
+  update_frequency: on_demand
+  version: api-v2
+  status: OFFLINE_OR_API_KEY_REQUIRED
+  record_count: 0
+  confidence: 0.78
+  rate_limit_policy: 1,000 checks/day free tier; reports treated as unconfirmed suspicion
+- source_id: hibp-kanonymity
+  name: Have I Been Pwned (k-Anonymity Breach Check)
+  category: breach_intel
+  data_type: Account Breach Metadata & 5-char SHA-1 Range Prefix
+  access_method: REST API v3 (HIBP_API_KEY for email; k-anonymity range for hashes)
+  url: https://haveibeenpwned.com/API/v3
+  license: CC BY 4.0
+  update_frequency: on_demand
+  version: api-v3
+  status: OFFLINE_OR_API_KEY_REQUIRED
+  record_count: 0
+  confidence: 0.97
+  rate_limit_policy: Never upload plaintext passwords; 1500ms spacing
+- source_id: opencti-connector
+  name: OpenCTI Local Knowledge Graph Connector
+  category: knowledge_graph
+  data_type: STIX 2.1 Graph Relationships
+  access_method: GraphQL Connector (Requires OPENCTI_URL & OPENCTI_TOKEN)
+  url: https://docs.opencti.io/
+  license: Apache-2.0
+  update_frequency: continuous
+  version: connector-v1
+  status: OFFLINE_OR_API_KEY_REQUIRED
+  record_count: 0
+  confidence: 0.9
+  rate_limit_policy: Local instance optional
+research_datasets:
+- dataset_id: cic-ids2017
+  name: CIC-IDS2017 Intrusion Detection Dataset
+  provider: Canadian Institute for Cybersecurity (UNB)
+  license: Public Research Use with Citation
+  collection_window: "July 3\u20137, 2017 (5 days)"
+  feature_schema: 80 network flow features (CICFlowMeter) + benign/attack labels
+  class_imbalance: High (~80% Benign, <0.01% Heartbleed/Infiltration)
+  known_issues: TCP session termination artifacts inCICFlowMeter; requires payload-free
+    flow normalization
+  split_methodology: Time-separated by capture day and source host IP to prevent campaign
+    leakage
+  raw_binaries_included: false
+  safe_handling: Flow metadata CSVs and benign PCAP slices only; no exploit payloads
+    executed
+- dataset_id: cse-cic-ids2018
+  name: CSE-CIC-IDS2018 on AWS
+  provider: Communications Security Establishment & UNB
+  license: Public Research Use
+  collection_window: "February\u2013March 2018"
+  feature_schema: 80 flow features + system logs across 5 subnets
+  class_imbalance: High (~83% Benign across 16.2M flows)
+  known_issues: Timestamp formatting variances across days; duplicate header rows
+    in raw CSVs
+  split_methodology: Strict subnet-separated and date-separated split
+  raw_binaries_included: false
+  safe_handling: Aggregated flow features only
+- dataset_id: ctu-13
+  name: CTU-13 Botnet Traffic Dataset
+  provider: Czech Technical University in Prague (Stratosphere Lab)
+  license: CC BY 4.0
+  collection_window: 2011 (13 distinct scenarios)
+  feature_schema: Bidirectional NetFlow (StartTime, Dur, Proto, SrcAddr, DstAddr,
+    State, TotPkts, TotBytes, Label)
+  class_imbalance: "Background traffic >95%, Botnet C2 flows ~1.5\u20133%"
+  known_issues: Background traffic contains unlabeled opportunistic scans
+  split_methodology: Scenario-separated split (Scenarios 1,2,6,8,9 train; Scenarios
+    3,4,5,7,10,11,12,13 test)
+  raw_binaries_included: false
+  safe_handling: Use NetFlow `.binetflow` summaries; never run historical botnet executables
+- dataset_id: unsw-nb15
+  name: UNSW-NB15 Network Intrusion Dataset
+  provider: UNSW Canberra Cyber Range Lab
+  license: Academic & Research Use with Attribution
+  collection_window: "January\u2013February 2015"
+  feature_schema: 49 features (Argus/Bro-IDS + 12 syntactic/flow algorithms)
+  class_imbalance: 87.3% Normal, 12.7% across 9 attack families
+  known_issues: TTL and window size artifacts between IXIA PerfectStorm synthetic
+    generator and normal traffic
+  split_methodology: Time-window split avoiding random row shuffle across identical
+    5-tuple sessions
+  raw_binaries_included: false
+  safe_handling: Tabular feature vectors only
+- dataset_id: bot-iot
+  name: Bot-IoT Dataset
+  provider: UNSW Canberra
+  license: Research Use Permitted with Citation
+  collection_window: '2018'
+  feature_schema: 46 network flow & IoT MQTT/telemetry attributes
+  class_imbalance: Extreme (>99% DDoS/Scan in full set; requires stratified sampling)
+  known_issues: Synthetic flood volume dominates unless downsampled by time window
+  split_methodology: Device-ID and time-window separated evaluation
+  raw_binaries_included: false
+  safe_handling: Flow metadata only
+- dataset_id: stratosphere-ips
+  name: Stratosphere Lab Malware & Benign Captures
+  provider: Stratosphere Laboratory (AIC Group, FEL CVUT)
+  license: CC BY-SA 4.0
+  collection_window: "2013\u20132025 continuous"
+  feature_schema: Zeek conn.log / dns.log / ssl.log behavioral letters
+  class_imbalance: Balanced per capture profile
+  known_issues: Expired domains in historical captures may now be sinkholed or parked
+  split_methodology: Capture-UUID separated split
+  raw_binaries_included: false
+  safe_handling: Zeek log replay only; binaries excluded
+- dataset_id: open-phishing-corpus
+  name: Curated Open Phishing & Benign URL Benchmark
+  provider: PhishTank / URLhaus / Tranco Top-1M Benign Baseline
+  license: CC0 / Public Research
+  collection_window: "2025\u20132026"
+  feature_schema: URL lexical features, TLD risk, homograph distance, credential token
+    presence
+  class_imbalance: Calibrated 10:1 Benign-to-Phishing evaluation ratio
+  known_issues: "Ephemeral phishing domains expire within 48\u201372 hours"
+  split_methodology: Registrable-domain disjoint split + temporal cutoff
+  raw_binaries_included: false
+  safe_handling: Defanged lexical string evaluation; never auto-fetch live phishing
+    pages from client devices

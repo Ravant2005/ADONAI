@@ -1,0 +1,30 @@
+version: "3.9"
+# ADONAI Isolated Cyber-Range Lab Network Configuration
+# Enforces internal: true so lab containers NEVER bridge to host LAN or public internet.
+services:
+  adonai-mac-brain:
+    build:
+      context: ..
+      dockerfile: cyber-range/Dockerfile.lab
+    container_name: adonai-mac-brain
+    ports:
+      - "127.0.0.1:8410:8410"
+    environment:
+      - ADONAI_ENV=PILOT
+      - ADONAI_LLM_BASE_URL=http://127.0.0.1:11434
+    networks:
+      - adonai_isolated_lab_net
+
+  adonai-scenario-emulator:
+    image: python:3.11-slim
+    container_name: adonai-scenario-emulator
+    command: ["python3", "-m", "unittest", "discover", "-s", "/app/tests"]
+    volumes:
+      - ..:/app:ro
+    networks:
+      - adonai_isolated_lab_net
+
+networks:
+  adonai_isolated_lab_net:
+    driver: bridge
+    internal: true

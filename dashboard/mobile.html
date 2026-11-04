@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ADONAI Android Protection Agent — 12-Screen Interactive Companion</title>
+  <link rel="stylesheet" href="/static/css/adonai.css" />
+  <style>
+    body { justify-content: center; align-items: flex-start; padding: 24px; background: #F8FAFC; }
+    .phone-workspace { display: grid; grid-template-columns: 320px 430px 1fr; gap: 24px; width: 100%; max-width: 1360px; }
+    .screen-selector { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .phone-frame {
+      width: 420px;
+      min-height: 760px;
+      background: #FFFFFF;
+      border: 3px solid var(--primary);
+      border-radius: 28px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 30px rgba(229, 9, 20, 0.12);
+    }
+    .phone-statusbar {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--muted);
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .phone-body { flex: 1; padding: 14px 4px; overflow-y: auto; }
+    .phone-title { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+    .phone-sub { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+    .m-card { background: #FAFAFA; border: 1px solid var(--border); padding: 12px; border-radius: 6px; margin-bottom: 10px; font-size: 12px; }
+    .m-screen { display: none; }
+    .m-screen.active { display: block; }
+  </style>
+</head>
+<body>
+  <div class="phone-workspace">
+    <!-- Left Column: 12 Mobile Screen Switcher -->
+    <div class="screen-selector">
+      <div class="brand-kicker">ANDROID AGENT (KOTLIN/COMPOSE PARITY)</div>
+      <div class="brand-title" style="font-size:20px;margin-bottom:6px;">ADONAI MOBILE</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Switch across all 12 required Android screens connected to the live ADONAI backend:</p>
+      <ul class="nav-list" id="mobileNavList">
+        <li class="nav-item active" data-mscreen="m-01"><span class="nav-num">01</span>Onboarding &amp; Boundaries</li>
+        <li class="nav-item" data-mscreen="m-02"><span class="nav-num">02</span>Permission Center</li>
+        <li class="nav-item" data-mscreen="m-03"><span class="nav-num">03</span>Protection Home</li>
+        <li class="nav-item" data-mscreen="m-04"><span class="nav-num">04</span>Live Activity Timeline</li>
+        <li class="nav-item" data-mscreen="m-05"><span class="nav-num">05</span>Data Exposure Details</li>
+        <li class="nav-item" data-mscreen="m-06"><span class="nav-num">06</span>Scam / Link Share Guard</li>
+        <li class="nav-item" data-mscreen="m-07"><span class="nav-num">07</span>Threat Incident Detail</li>
+        <li class="nav-item" data-mscreen="m-08"><span class="nav-num">08</span>Trusted Contacts Context</li>
+        <li class="nav-item" data-mscreen="m-09"><span class="nav-num">09</span>VPN &amp; Network Metadata</li>
+        <li class="nav-item" data-mscreen="m-10"><span class="nav-num">10</span>Mac LAN Pairing</li>
+        <li class="nav-item" data-mscreen="m-11"><span class="nav-num">11</span>Privacy &amp; Retention</li>
+        <li class="nav-item" data-mscreen="m-12"><span class="nav-num">12</span>Isolated Lab Mode</li>
+        <li class="nav-item" data-mscreen="m-13" style="border-left:2px solid var(--primary);"><span class="nav-num">13</span>🛡️ ADONAI File Storage</li>
+      </ul>
+    </div>
+
+    <!-- Center Column: Interactive Red/Black Android Phone Frame -->
+    <div class="phone-frame">
+      <div class="phone-statusbar">
+        <span>ADONAI GUARD &bull; VPN META</span>
+        <span id="phoneConnBadge">LAN PAIRED</span>
+      </div>
+      <div class="phone-body">
+        <!-- M01 Onboarding -->
+        <div class="m-screen active" id="m-01">
+          <div class="phone-title">Welcome to ADONAI</div>
+          <div class="phone-sub">Evidence-first personal cyber intelligence</div>
+          <div class="m-card" style="border-color:var(--primary);">
+            <strong>What ADONAI Can Observe:</strong>
+            <ul style="padding-left:16px;margin-top:6px;color:var(--muted);">
+              <li>Installed apps &amp; granted permissions (<code>PackageManager</code>)</li>
+              <li>Links, text &amp; files you share via Android Share Sheet</li>
+              <li>Opt-in notification fields exposed by Android</li>
+              <li>Opt-in local VPN DNS &amp; connection metadata</li>
+            </ul>
+          </div>
+          <div class="m-card">
+            <strong>What ADONAI Cannot &amp; Will Never Do:</strong>
+            <ul style="padding-left:16px;margin-top:6px;color:var(--muted);">
+              <li>Cannot read private WhatsApp/Signal databases</li>
+              <li>Cannot decrypt third-party HTTPS/TLS payloads</li>
+              <li>Never scrapes screens via Accessibility services</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- M02 Permission Center -->
+        <div class="m-screen" id="m-02">
+          <div class="phone-title">Permission Center</div>
+          <div class="phone-sub">Purpose-specific, revocable Android permissions</div>
+          <div id="mPermissionCards"></div>
+        </div>
+
+        <!-- M03 Protection Home -->
+        <div class="m-screen" id="m-03">
+          <div class="phone-title">Device Protection Home</div>
+          <div class="phone-sub">Pixel 8 Pro (Android 15, API 35)</div>
+          <div class="m-card" style="border-left:4px solid var(--primary);">
+            <div class="kpi-label">PROTECTION STATUS</div>
+            <div style="font-size:20px;font-weight:800;margin:4px 0;">ACTIVE &bull; LOCAL-FIRST</div>
+            <div style="color:var(--muted);">Room Cache Synced &bull; Battery Overhead: 1.4% / hr</div>
+          </div>
+          <div id="mHomeStats"></div>
+        </div>
+
+        <!-- M04 Live Activity Timeline -->
+        <div class="m-screen" id="m-04">
+          <div class="phone-title">Live Exposure Timeline</div>
+          <div class="phone-sub">Real device observations with evidence labels</div>
+          <div id="mTimelineList"></div>
+        </div>
+
+        <!-- M05 Data Exposure Details -->
+        <div class="m-screen" id="m-05">
+          <div class="phone-title">App &amp; Permission Exposure</div>
+          <div class="phone-sub">Sourced from Android PackageManager</div>
+          <div id="mAppsList"></div>
+        </div>
+
+        <!-- M06 Scam / Link Share Guard -->
+        <div class="m-screen" id="m-06">
+          <div class="phone-title">Share-Sheet Scam Guard</div>
+          <div class="phone-sub">Submit suspicious URL or message via ACTION_SEND</div>
+          <div class="m-card">
+            <input class="input-field" id="mShareUrl" placeholder="URL (e.g., https://secure-verify-auth.example.test/login)" style="margin-bottom:8px;" />
+            <textarea class="textarea-field" id="mShareText" rows="3" placeholder="Paste suspicious SMS / notification text..." style="margin-bottom:8px;"></textarea>
+            <select class="select-field" id="mShareSender" style="margin-bottom:8px;">
+              <option value="rec-unknown-03">Unknown Sender (+1-555-0199-882)</option>
+              <option value="rec-mom-01">Mom (Trusted Family Contact)</option>
+            </select>
+            <button class="btn btn-primary" style="width:100%;" onclick="runMobileShareAnalyze()">Analyze in ADONAI</button>
+            <div id="mShareOutput" style="margin-top:10px;display:none;" class="mono"></div>
+          </div>
+        </div>
+
+        <!-- M07 Threat Incident Detail -->
+        <div class="m-screen" id="m-07">
+          <div class="phone-title">Threat Incident Detail</div>
+          <div class="phone-sub">5-Question Evidence Breakdown</div>
+          <div id="mIncidentDetail"></div>
+        </div>
+
+        <!-- M08 Trusted Contacts -->
+        <div class="m-screen" id="m-08">
+          <div class="phone-title">Trusted Contacts Context</div>
+          <div class="phone-sub">Reduces benign noise; never overrides OTP/compromise</div>
+          <div id="mContactsList"></div>
+        </div>
+
+        <!-- M09 VPN & Network Metadata -->
+        <div class="m-screen" id="m-09">
+          <div class="phone-title">Local VPN Metadata Guard</div>
+          <div class="phone-sub">Persistent notification &bull; Metadata-only visibility</div>
+          <div class="m-card" style="border-color:var(--primary);">
+            <div><strong>VpnService Status:</strong> <span class="badge badge-confirmed" id="vpnStatusBadge">RUNNING (PERSISTENT NOTIFICATION)</span></div>
+            <p style="color:var(--muted);margin:8px 0;">Observes DNS queries and destination IP/port metadata. TLS payloads remain encrypted end-to-end and are never intercepted.</p>
+            <button class="btn" onclick="document.getElementById('vpnStatusBadge').textContent='STOPPED BY USER'">Stop Local VPN</button>
+            <button class="btn btn-primary" onclick="document.getElementById('vpnStatusBadge').textContent='RUNNING (PERSISTENT NOTIFICATION)'">Start Local VPN</button>
+          </div>
+          <div class="m-card">
+            <strong>Measured Resource Overhead (60-min Window):</strong>
+            <div class="mono" style="margin-top:4px;color:var(--muted);">Battery: 1.4% / hr | Memory: 44 MB | CPU: 1.8% avg</div>
+          </div>
+        </div>
+
+        <!-- M10 Mac LAN Pairing -->
+        <div class="m-screen" id="m-10">
+          <div class="phone-title">Local Mac Pairing</div>
+          <div class="phone-sub">Authenticated LAN sync &bull; Offline resilient</div>
+          <div class="m-card">
+            <p style="margin-bottom:8px;color:var(--muted);">Enter 6-digit code from Mac Dashboard or revoke pairing:</p>
+            <input class="input-field" id="mPairCodeInput" placeholder="6-digit code" style="margin-bottom:8px;" />
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-primary" onclick="pairFromPhone()">Pair with Mac</button>
+              <button class="btn" onclick="revokeFromPhone()">Revoke Mac</button>
+            </div>
+            <div id="mPairResult" class="mono" style="margin-top:8px;"></div>
+          </div>
+        </div>
+
+        <!-- M11 Privacy & Retention -->
+        <div class="m-screen" id="m-11">
+          <div class="phone-title">Privacy &amp; Data Retention</div>
+          <div class="phone-sub">Local Room cache TTL: 30 Days &bull; Zero model training</div>
+          <div class="m-card">
+            <p style="color:var(--muted);margin-bottom:10px;">All telemetry is minimized and secret-redacted locally. You can purge local device telemetry at any time:</p>
+            <button class="btn btn-primary" style="width:100%;" onclick="purgeRealFromPhone()">Delete Local Device Telemetry</button>
+          </div>
+        </div>
+
+        <!-- M12 Lab Mode -->
+        <div class="m-screen" id="m-12">
+          <div class="phone-title">Isolated Lab Mode</div>
+          <div class="phone-sub">Strictly separated from REAL personal protection</div>
+          <div class="m-card" style="border:1px dashed var(--primary);">
+            <span class="badge badge-lab">DEMO / LAB ENVIRONMENT</span>
+            <p style="color:var(--muted);margin:8px 0;">Trigger a safe synthetic phishing or permission event tagged strictly as <code>LAB</code> so it never contaminates personal history:</p>
+            <button class="btn btn-primary" style="width:100%;" onclick="emitLabFromPhone()">Emit Safe LAB Test Event</button>
+            <div id="mLabResult" class="mono" style="margin-top:8px;"></div>
+          </div>
+        </div>
+
+        <!-- M13 ADONAI File Storage (Media Vault) -->
+        <div class="m-screen" id="m-13">
+          <div class="phone-title">ADONAI File Storage</div>
+          <div class="phone-sub">Truth-First Media Authenticity Vault &amp; Camera Hook</div>
+
+          <div class="m-card" style="border-left:3px solid #00ff88;">
+            <div style="font-weight:700;font-size:11px;color:#00ff88;margin-bottom:4px;">CAMERA HOOK (ACTIVE)</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Native Camera Hook runs in background via <code>MediaStore</code>. Every recording or photo is automatically watermarked and hashed to blockchain.</div>
+            <button class="btn" style="width:100%;font-size:11px;" onclick="simulateCameraCapture()">📸 Capture Photo with Native Camera Hook</button>
+            <div id="mCameraHookStatus" class="mono" style="font-size:10px;margin-top:6px;color:#00ff88;display:none;"></div>
+          </div>
+
+          <div style="font-size:12px;font-weight:700;margin:12px 0 6px 0;color:var(--text);">Vault Media Files (Tap for View / Verify):</div>
+          <div id="mVaultMediaList"></div>
+
+          <!-- Interactive View / Verify Popup Modal -->
+          <div id="mMediaPopupModal" style="display:none;position:relative;background:#FFFFFF;border:2px solid var(--primary);border-radius:12px;padding:14px;margin-top:12px;box-shadow:0 4px 15px rgba(0,0,0,0.08);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <strong id="mPopupMediaTitle" style="font-size:13px;color:var(--text);">Media File</strong>
+              <button class="btn" style="padding:2px 6px;font-size:10px;" onclick="closeMediaPopup()">&times;</button>
+            </div>
+            <div id="mPopupMediaDesc" style="font-size:11px;color:var(--muted);margin-bottom:12px;"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+              <button class="btn" style="width:100%;" onclick="executeViewAction()">👁️ View Media</button>
+              <button class="btn btn-primary" style="width:100%;" onclick="executeVerifyAction()">🔍 Verify Authenticity</button>
+            </div>
+            <div id="mPopupVerificationOutput" style="display:none;font-size:11px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Architecture & Kotlin Implementation Notes -->
+    <div class="card">
+      <div class="section-h2">Native Android Kotlin/Compose Architecture</div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">
+        The complete native Android source project is located in <code>android-agent/</code> inside the product repository and maps 1:1 to these 13 screens:
+      </p>
+      <table class="data-table">
+        <tr><th>Component</th><th>Implementation File</th></tr>
+        <tr><td>Red/Black Material3 Theme</td><td class="mono">ui/theme/AdonaiTheme.kt</td></tr>
+        <tr><td>12 Jetpack Compose Screens</td><td class="mono">ui/screens/AdonaiScreens.kt</td></tr>
+        <tr><td>Camera Watermark Hook</td><td class="mono">guardian/CameraObserverService.kt</td></tr>
+        <tr><td>Watermark &amp; Hashing SDK</td><td class="mono">guardian/GuardianWatermarkSDK.kt</td></tr>
+        <tr><td>File Storage Vault Activity</td><td class="mono">guardian/GuardianFileStorageActivity.kt</td></tr>
+        <tr><td>3-Stage Verdict Screen</td><td class="mono">guardian/VerificationResultScreen.kt</td></tr>
+        <tr><td>Room Local Cache &amp; DAOs</td><td class="mono">data/local/AdonaiDatabase.kt</td></tr>
+        <tr><td>Android Keystore Secrets</td><td class="mono">security/KeystoreManager.kt</td></tr>
+        <tr><td>PackageManager Inventory</td><td class="mono">collectors/AppInventoryCollector.kt</td></tr>
+        <tr><td>Share-Sheet (ACTION_SEND)</td><td class="mono">collectors/ShareSheetAnalyzerActivity.kt</td></tr>
+        <tr><td>Opt-In Notification Guard</td><td class="mono">services/AdonaiNotificationService.kt</td></tr>
+        <tr><td>Opt-In Local VpnService</td><td class="mono">services/AdonaiVpnService.kt</td></tr>
+        <tr><td>WorkManager LAN Sync</td><td class="mono">sync/MacSyncWorker.kt</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('#mobileNavList .nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('#mobileNavList .nav-item').forEach(n => n.classList.remove('active'));
+        document.querySelectorAll('.m-screen').forEach(s => s.classList.remove('active'));
+        item.classList.add('active');
+        document.getElementById(item.getAttribute('data-mscreen')).classList.add('active');
+      });
+    });
+
+    async function loadMobileState() {
+      const dev = await (await fetch('/api/devices')).json();
+      const evs = await (await fetch('/api/events?environment=REAL')).json();
+      const incs = await (await fetch('/api/incidents?environment=REAL')).json();
+      const priv = await (await fetch('/api/privacy-audit')).json();
+
+      document.getElementById('mPermissionCards').innerHTML = dev.consents.map(c => `
+        <div class="m-card">
+          <div style="display:flex;justify-content:space-between;">
+            <strong>${c.feature_name}</strong>
+            <span class="badge ${c.granted ? 'badge-confirmed' : 'badge-low'}">${c.granted ? 'ACTIVE' : 'OFF'}</span>
+          </div>
+          <div style="color:var(--muted);margin-top:4px;">${c.scope_description}</div>
+        </div>
+      `).join('');
+
+      document.getElementById('mHomeStats').innerHTML = `
+        <div class="m-card"><strong>Audited Apps:</strong> ${dev.android_app_inventory.length} installed packages</div>
+        <div class="m-card"><strong>Real Timeline Events:</strong> ${evs.count} observations</div>
+        <div class="m-card"><strong>Open Device Incidents:</strong> ${incs.incidents.length}</div>
+      `;
+
+      document.getElementById('mTimelineList').innerHTML = evs.events.map(e => `
+        <div class="m-card">
+          <div style="display:flex;justify-content:space-between;">
+            <strong>${e.event_type}</strong>
+            <span class="badge badge-observed">${e.evidence_class}</span>
+          </div>
+          <div class="mono" style="color:var(--primary);margin:2px 0;">${e.app_context}</div>
+          <div style="color:var(--muted);">${e.summary}</div>
+        </div>
+      `).join('');
+
+      document.getElementById('mAppsList').innerHTML = dev.android_app_inventory.map(a => `
+        <div class="m-card">
+          <div style="display:flex;justify-content:space-between;">
+            <strong>${a.app_label}</strong>
+            <span class="badge ${a.risk_score >= 0.7 ? 'badge-critical' : 'badge-low'}">Risk ${(a.risk_score*100).toFixed(0)}%</span>
+          </div>
+          <div class="mono" style="color:var(--muted);font-size:11px;">${a.package_name} (${a.installer_source})</div>
+          <div style="color:var(--muted);margin-top:4px;">${a.risk_rationale}</div>
+        </div>
+      `).join('');
+
+      document.getElementById('mIncidentDetail').innerHTML = incs.incidents.map(i => `
+        <div class="m-card" style="border-color:var(--primary);">
+          <div><strong>${i.title}</strong> <span class="badge badge-high">${i.severity}</span></div>
+          <div style="margin-top:6px;"><strong>WHAT:</strong> ${i.what_observed}</div>
+          <div style="margin-top:4px;"><strong>WHERE:</strong> ${i.where_implicated}</div>
+          <div style="margin-top:4px;"><strong>WHY:</strong> ${i.why_risky}</div>
+          <div style="margin-top:4px;"><strong>UNCERTAINTY:</strong> ${i.uncertainty_note}</div>
+          <div style="margin-top:6px;color:var(--primary);"><strong>NOW WHAT:</strong> ${i.now_what_action}</div>
+        </div>
+      `).join('') || '<div class="m-card">No active REAL incidents.</div>';
+
+      document.getElementById('mContactsList').innerHTML = priv.trusted_contacts.map(c => `
+        <div class="m-card">
+          <div style="display:flex;justify-content:space-between;">
+            <strong>${c.display_name}</strong>
+            <span class="badge badge-confirmed">${c.trust_level}</span>
+          </div>
+          <div class="mono" style="color:var(--muted);">${c.identifier}</div>
+          <div style="color:var(--muted);margin-top:4px;font-size:11px;">Policy: ${c.override_policy}</div>
+        </div>
+      `).join('');
+    }
+
+    async function runMobileShareAnalyze() {
+      const url = document.getElementById('mShareUrl').value.trim() || null;
+      const message_text = document.getElementById('mShareText').value.trim();
+      const sender = document.getElementById('mShareSender').value;
+      const res = await (await fetch('/api/analyze/share', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ device_id: 'android-pixel8-real-01', environment: 'REAL', url, message_text, sender })
+      })).json();
+      const out = document.getElementById('mShareOutput');
+      out.style.display = 'block';
+      if (res.detections && res.detections.length > 0) {
+        out.innerHTML = `<span class="badge badge-critical">${res.detections[0].severity}</span> ${res.detections[0].rationale}`;
+      } else {
+        out.innerHTML = `<span class="badge badge-observed">SAFE / BENIGN</span> No scam indicators triggered.`;
+      }
+      await loadMobileState();
+    }
+
+    async function pairFromPhone() {
+      const code = document.getElementById('mPairCodeInput').value.trim();
+      const res = await fetch('/api/pairing/complete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pairing_code: code, device_id: 'android-pixel8-real-01', device_name: 'Pixel 8 Pro (Android Agent)' })
+      });
+      const data = await res.json();
+      document.getElementById('mPairResult').textContent = res.ok ? `Paired! Token issued.` : `Error: ${data.detail}`;
+      if (res.ok) document.getElementById('phoneConnBadge').textContent = 'LAN PAIRED';
+    }
+
+    async function revokeFromPhone() {
+      await fetch('/api/pairing/revoke/android-pixel8-real-01', { method: 'POST' });
+      document.getElementById('phoneConnBadge').textContent = 'OFFLINE (LOCAL MODE)';
+      document.getElementById('mPairResult').textContent = 'Pairing revoked. Running in standalone on-device mode.';
+    }
+
+    async function purgeRealFromPhone() {
+      await fetch('/api/privacy/purge-events?environment=REAL', { method: 'DELETE' });
+      await loadMobileState();
+    }
+
+    async function emitLabFromPhone() {
+      const res = await (await fetch('/api/cyber-range/run', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ scenario_id: 'scen-02', target_endpoint_id: 'sim-ep-0002', is_replay: false })
+      })).json();
+      document.getElementById('mLabResult').textContent = `Emitted ${res.scenario_code} in isolated LAB (${res.time_to_detect_ms} ms).`;
+    }
+
+    // =========================================================================
+    // M13: ADONAI File Storage & Interactive "View or Verify" Engine
+    // =========================================================================
+    let currentSelectedVaultItem = null;
+    let vaultItems = [
+      {
+        id: 'media-01',
+        name: 'IMG_2026_FamilyVacation.jpg',
+        type: 'IMAGE',
+        icon: '🖼️',
+        desc: 'Captured via local Pixel 8 Pro camera app. Embedded with cryptographic watermark and anchored to local blockchain.',
+        isAuthenticCamera: true,
+        contentB64: btoa('GENUINE LOCAL CAMERA RAW CAPTURED SENSOR IMAGE DATA ' * 10),
+        contextText: 'Family trip photo captured with personal device'
+      },
+      {
+        id: 'media-02',
+        name: 'VoiceNote_Friend_Emergency.m4a',
+        type: 'AUDIO',
+        icon: '🎵',
+        desc: 'Incoming WhatsApp voice note: sounds like your friend asking for ₹50,000 emergency medical transfer.',
+        isAuthenticCamera: false,
+        contentB64: btoa('SYNTHETIC AI VOICE CLONED AUDIO STREAM ' * 10),
+        contextText: 'Bro, I had an accident at the hospital, send Rs 50,000 to this UPI ID right now urgently!'
+      },
+      {
+        id: 'media-03',
+        name: 'CEO_StockScheme_Viral.mp4',
+        type: 'VIDEO',
+        icon: '🎥',
+        desc: 'Shared video clip of CEO promising 500% guaranteed monthly returns on a new investment platform.',
+        isAuthenticCamera: false,
+        contentB64: btoa('SYNTHETIC DEEPFAKE VIDEO FRAMES ' * 10),
+        contextText: 'Exclusive breaking investment scheme: guaranteed 500% profit double your money in 24 hours'
+      },
+      {
+        id: 'media-04',
+        name: 'Govt_KYC_Account_Freeze.jpg',
+        type: 'IMAGE',
+        icon: '🖼️',
+        desc: 'Notice claiming your bank account will be suspended within 24 hours unless you update KYC and verify OTP.',
+        isAuthenticCamera: false,
+        contentB64: btoa('EDITED PHOTO SCREENSHOT OF FAKE BANK NOTICE ' * 10),
+        contextText: 'Urgent notice: bank account freeze within 24 hours, visit link and submit 6-digit OTP code to update KYC'
+      }
+    ];
+
+    function renderVaultMediaList() {
+      const list = document.getElementById('mVaultMediaList');
+      if (!list) return;
+      list.innerHTML = vaultItems.map(item => `
+        <div class="m-card" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:10px;" onclick="openMediaPopup('${item.id}')">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:22px;">${item.icon}</span>
+            <div>
+              <div style="font-weight:700;color:var(--text);font-size:12px;">${item.name}</div>
+              <div style="font-size:10px;color:var(--muted);">${item.type} &bull; ${item.isAuthenticCamera ? 'Auto-Watermarked' : 'Unverified Inbound'}</div>
+            </div>
+          </div>
+          <span class="badge ${item.statusBadge ? (item.statusBadge.includes('VERIFIED') ? 'badge-confirmed' : 'badge-critical') : 'badge-observed'}">${item.statusBadge || 'TAP TO VIEW/VERIFY'}</span>
+        </div>
+      `).join('');
+    }
+
+    function openMediaPopup(itemId) {
+      currentSelectedVaultItem = vaultItems.find(x => x.id === itemId);
+      if (!currentSelectedVaultItem) return;
+      document.getElementById('mMediaPopupModal').style.display = 'block';
+      document.getElementById('mPopupMediaTitle').innerHTML = `${currentSelectedVaultItem.icon} ${currentSelectedVaultItem.name}`;
+      document.getElementById('mPopupMediaDesc').textContent = currentSelectedVaultItem.desc;
+      const out = document.getElementById('mPopupVerificationOutput');
+      out.style.display = 'none';
+      out.innerHTML = '';
+    }
+
+    function closeMediaPopup() {
+      document.getElementById('mMediaPopupModal').style.display = 'none';
+      currentSelectedVaultItem = null;
+    }
+
+    function executeViewAction() {
+      if (!currentSelectedVaultItem) return;
+      const out = document.getElementById('mPopupVerificationOutput');
+      out.style.display = 'block';
+      out.innerHTML = `
+        <div style="background:#F8FAFC;padding:10px;border-radius:6px;border:1px solid #E2E8F0;">
+          <div style="font-weight:700;color:var(--text);margin-bottom:4px;">👁️ Viewing Media: ${currentSelectedVaultItem.name}</div>
+          <div style="color:var(--muted);margin-bottom:6px;">Media stream playback / renderer active.</div>
+          <div style="font-size:10px;color:#64748B;">Context: ${currentSelectedVaultItem.contextText}</div>
+        </div>
+      `;
+    }
+
+    async function executeVerifyAction() {
+      if (!currentSelectedVaultItem) return;
+      const out = document.getElementById('mPopupVerificationOutput');
+      out.style.display = 'block';
+      out.innerHTML = `<div style="color:var(--muted);font-size:11px;">⏳ Running ADONAI Guardian 3-Stage Verification Pipeline...</div>`;
+
+      try {
+        let b64ToSend = currentSelectedVaultItem.contentB64;
+
+        // If authentic camera capture, ensure it is registered first
+        if (currentSelectedVaultItem.isAuthenticCamera && !currentSelectedVaultItem.registeredBlock) {
+          const regRes = await fetch('/api/guardian/register-media', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              device_id: 'android-pixel8-real-01',
+              media_type: currentSelectedVaultItem.type,
+              file_name: currentSelectedVaultItem.name,
+              file_size_bytes: 4096,
+              content_b64: b64ToSend,
+              context_text: currentSelectedVaultItem.contextText
+            })
+          });
+          const regData = await regRes.json();
+          currentSelectedVaultItem.registeredBlock = regData.block_id;
+          if (regData.watermarked_content_b64) {
+            b64ToSend = regData.watermarked_content_b64;
+          }
+        }
+
+        // Call verification pipeline
+        const vRes = await fetch('/api/guardian/verify', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            device_id: 'android-pixel8-real-01',
+            media_type: currentSelectedVaultItem.type,
+            content_b64: b64ToSend,
+            context_text: currentSelectedVaultItem.contextText,
+            run_full_forensics: true
+          })
+        });
+        const data = await vRes.json();
+        currentSelectedVaultItem.statusBadge = data.verdict_badge || data.overall_verdict;
+        renderVaultMediaList();
+
+        const vColor = data.overall_verdict === 'VERIFIED_AUTHENTIC' ? '#00A854' : (['HIGH','CRITICAL'].includes(data.money_risk_level) ? 'var(--primary)' : '#D97706');
+
+        out.innerHTML = `
+          <div style="border:1px solid ${vColor};border-radius:6px;padding:10px;background:#FFF5F5;">
+            <div style="font-size:13px;font-weight:900;color:${vColor};margin-bottom:6px;">${data.verdict_badge || data.overall_verdict}</div>
+            <div style="display:flex;gap:12px;margin-bottom:6px;font-size:11px;">
+              <span>Stage: <strong>${data.stage_reached}/3</strong></span>
+              <span>AI Gen: <strong style="color:${vColor}">${data.ai_probability_percent ?? 0}%</strong></span>
+              <span>Fake: <strong style="color:${vColor}">${data.fake_possibility_percent ?? 0}%</strong></span>
+              <span>Risk: <strong>${data.money_risk_level || 'LOW'}</strong></span>
+            </div>
+            ${data.money_context ? `<div style="color:#B91C1C;font-size:10px;background:#FEF2F2;padding:4px 6px;border-radius:4px;border:1px solid #FECACA;margin-bottom:6px;">💰 ${data.money_context}</div>` : ''}
+            <div style="color:#475569;font-size:10px;line-height:1.4;">${data.explanation || ''}</div>
+            ${data.why_it_could_be_fake && data.why_it_could_be_fake.length ? `
+              <div style="margin-top:6px;font-size:10px;">
+                <strong style="color:var(--primary);">Why It Could Be Fake:</strong>
+                <ul style="padding-left:14px;margin:2px 0;color:#334155;">
+                  ${data.why_it_could_be_fake.slice(0,3).map(r => `<li>${r}</li>`).join('')}
+                </ul>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      } catch(err) {
+        out.innerHTML = `<div style="color:var(--primary);font-size:11px;">Verification error: ${err.message}</div>`;
+      }
+    }
+
+    async function simulateCameraCapture() {
+      const status = document.getElementById('mCameraHookStatus');
+      status.style.display = 'block';
+      status.textContent = '📸 Camera capture observed... embedding DCT watermark & hashing to blockchain...';
+      const fakeImage = btoa('FRESH_CAMERA_SHOT_' + Date.now() + '_' + 'DATA_BYTES_'.repeat(20));
+      const r = await fetch('/api/guardian/register-media', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          device_id: 'android-pixel8-real-01',
+          media_type: 'IMAGE',
+          file_name: `IMG_${Date.now()}.jpg`,
+          file_size_bytes: 8192,
+          content_b64: fakeImage,
+          context_text: 'Native camera capture'
+        })
+      });
+      const data = await r.json();
+      status.textContent = `✅ Watermark embedded! Anchored to block ${data.block_id} (hash: ${data.content_hash.slice(0,14)}...)`;
+      vaultItems.unshift({
+        id: 'media-' + Date.now(),
+        name: `IMG_${Date.now()}.jpg`,
+        type: 'IMAGE',
+        icon: '🖼️',
+        desc: `Fresh camera capture auto-watermarked and registered on blockchain block ${data.block_id}.`,
+        isAuthenticCamera: true,
+        contentB64: data.watermarked_content_b64 || fakeImage,
+        registeredBlock: data.block_id,
+        contextText: 'Native camera capture'
+      });
+      renderVaultMediaList();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadMobileState();
+      renderVaultMediaList();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+[
+  {
+    "technique_id": "T1071.004",
+    "stix_id": "attack-pattern--4ff5d6a8-c062-4c68-a778-36fc5edd564f",
+    "name": "Application Layer Protocol: DNS",
+    "domain": "Enterprise / Mobile",
+    "tactic": "Command and Control",
+    "version": "15.1",
+    "description": "Adversaries may communicate using the Domain Name System (DNS) application layer protocol to avoid detection/network filtering.",
+    "d3fend_countermeasure": "D3-DNSDL (DNS Denylisting) / D3-NTA (Network Traffic Analysis)"
+  },
+  {
+    "technique_id": "T1660",
+    "stix_id": "attack-pattern--53263a67-075e-48fa-974b-91c5b5445db7",
+    "name": "Phishing (Mobile / Messaging)",
+    "domain": "Mobile",
+    "tactic": "Initial Access",
+    "version": "15.1",
+    "description": "Adversaries may send phishing messages via SMS, messaging apps, or social platforms to trick users into divulging credentials or OTP codes.",
+    "d3fend_countermeasure": "D3-UA (URL Analysis) / D3-MHA (Message Header & Content Analysis)"
+  },
+  {
+    "technique_id": "T1566.002",
+    "stix_id": "attack-pattern--2b742742-28c3-4e1b-bab7-8350d6300fa7",
+    "name": "Phishing: Spearphishing Link",
+    "domain": "Enterprise",
+    "tactic": "Initial Access",
+    "version": "15.1",
+    "description": "Adversaries send spearphishing messages with a malicious link to harvest credentials or session tokens.",
+    "d3fend_countermeasure": "D3-UA (URL Analysis)"
+  },
+  {
+    "technique_id": "T1110.001",
+    "stix_id": "attack-pattern--a93494bb-4b80-4ea1-8695-3236a49916fd",
+    "name": "Brute Force: Password Guessing",
+    "domain": "Enterprise",
+    "tactic": "Credential Access",
+    "version": "15.1",
+    "description": "Adversaries may systematically guess passwords via repetitive login attempts.",
+    "d3fend_countermeasure": "D3-AL (Account Locking) / D3-LAM (Login Activity Monitoring)"
+  },
+  {
+    "technique_id": "T1059",
+    "stix_id": "attack-pattern--7385dfaf-6886-4229-9ecd-6fd678040830",
+    "name": "Command and Scripting Interpreter",
+    "domain": "Enterprise",
+    "tactic": "Execution",
+    "version": "15.1",
+    "description": "Unusual process execution followed by outbound network connection.",
+    "d3fend_countermeasure": "D3-PSA (Process Spawn Analysis)"
+  },
+  {
+    "technique_id": "T1404",
+    "stix_id": "attack-pattern--351c0927-2fc1-4a2c-ad84-cbbee7eb8172",
+    "name": "Exploitation for Privilege Escalation / Permission Abuse",
+    "domain": "Mobile",
+    "tactic": "Privilege Escalation",
+    "version": "15.1",
+    "description": "Apps requesting invasive dangerous permissions (SMS, Accessibility, Call Log) outside expected functional scope.",
+    "d3fend_countermeasure": "D3-APA (Application Permission Auditing)"
+  },
+  {
+    "technique_id": "T1041",
+    "stix_id": "attack-pattern--92d7da27-2d91-488e-a00c-059dc162766d",
+    "name": "Exfiltration Over C2 / Unusual Outbound Metadata",
+    "domain": "Enterprise / Mobile",
+    "tactic": "Exfiltration",
+    "version": "15.1",
+    "description": "Sensitive local resource access closely followed by high-entropy or unusual outbound connection metadata.",
+    "d3fend_countermeasure": "D3-ach (Outbound Traffic Volume & Sequence Correlation)"
+  }
+]
