@@ -1,5 +1,5 @@
 {
-  "timestamp_utc": "2026-11-04T14:18:54.044438+00:00",
+  "timestamp_utc": "2026-11-04T16:05:00.063005+00:00",
   "product": "ADONAI Personal Cyber-Intelligence System",
   "host": {
     "os": "Darwin",
@@ -8,7 +8,7 @@
     "processor": "arm",
     "cpu_count": 10,
     "memory_total_gb": 8.0,
-    "disk_free_gb": 54.17,
+    "disk_free_gb": 52.91,
     "disk_total_gb": 460.38
   },
   "toolchains": {

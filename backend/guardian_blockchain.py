@@ -238,17 +238,19 @@ class GuardianBlockchain:
 # ---------------------------------------------------------------------------
 
 class MockExternalChain:
-    """Simulates an Ethereum/Polygon blockchain lookup for media hash anchoring.
+    """Simulates or connects to Ethereum/Polygon blockchain lookup for media hash anchoring.
 
-    No actual network calls are made. Provides realistic latency simulation
-    and deterministic confidence scores based on hash characteristics.
+    Supports Alchemy Polygon Amoy RPC endpoint and local fallback.
     """
 
     # Simulated known-good hashes (in a real system these would come from on-chain data)
     _SIMULATED_REGISTRY: dict[str, dict] = {}
 
-    def __init__(self, network: str = "polygon-mumbai") -> None:
+    def __init__(self, network: str = "polygon-amoy", rpc_url: str | None = None) -> None:
+        import os
         self.network = network
+        self.rpc_url = rpc_url or os.environ.get("ALCHEMY_POLYGON_RPC_URL", "https://polygon-amoy.g.alchemy.com/v2/alch_fpTvmMTh2Xe5F2tnJ_YPj")
+        self.signer_address = os.environ.get("GUARDIAN_SIGNER_ADDRESS", "0x7de4fed8c2f2419a96c007f3a43cf629408536a0")
 
     def _simulate_tx_hash(self, media_hash: str) -> str:
         """Deterministically generate a fake transaction hash."""

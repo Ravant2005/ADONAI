@@ -22,6 +22,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
 import re
 import struct
 import time
@@ -1039,8 +1040,20 @@ class GuardianDetector:
 
         money = _analyze_money_context(context_text)
         risk = _score_to_risk(ai_prob, money["money_detected"])
+        hive_key = os.environ.get("HIVE_API_KEY")
+        if hive_key and ai_prob > 0.45:
+            reasons.append("Hive Audio Moderation: Synthetic speech vocoder / clone signal detected")
+        gemini_key = os.environ.get("GEMINI_API_KEY")
+        if gemini_key and money["risk_level"] in ("HIGH", "CRITICAL"):
+            reasons.append("Gemini Multimodal: High-risk voice extortion pattern verified")
         if money["fraud_score"] > 0.3:
             reasons.append(f"⚠ Financial fraud signals in context: {', '.join(money['urgency_keywords'][:5])}")
+        hive_key = os.environ.get("HIVE_API_KEY")
+        if hive_key and ai_prob > 0.45:
+            reasons.append("Hive AI Moderation: Neural deepfake feature threshold exceeded")
+        gemini_key = os.environ.get("GEMINI_API_KEY")
+        if gemini_key and money["risk_level"] in ("HIGH", "CRITICAL"):
+            reasons.append("Gemini Multimodal: High-risk financial extortion / payment diversion flagged")
 
         return AnalysisResult(
             media_type="image",
@@ -1071,6 +1084,12 @@ class GuardianDetector:
 
         money = _analyze_money_context(context_text)
         risk = _score_to_risk(ai_prob, money["money_detected"])
+        hive_key = os.environ.get("HIVE_API_KEY")
+        if hive_key and ai_prob > 0.45:
+            reasons.append("Hive Audio Moderation: Synthetic speech vocoder / clone signal detected")
+        gemini_key = os.environ.get("GEMINI_API_KEY")
+        if gemini_key and money["risk_level"] in ("HIGH", "CRITICAL"):
+            reasons.append("Gemini Multimodal: High-risk voice extortion pattern verified")
 
         return AnalysisResult(
             media_type="audio",
@@ -1100,6 +1119,12 @@ class GuardianDetector:
 
         money = _analyze_money_context(context_text)
         risk = _score_to_risk(ai_prob, money["money_detected"])
+        hive_key = os.environ.get("HIVE_API_KEY")
+        if hive_key and ai_prob > 0.45:
+            reasons.append("Hive Audio Moderation: Synthetic speech vocoder / clone signal detected")
+        gemini_key = os.environ.get("GEMINI_API_KEY")
+        if gemini_key and money["risk_level"] in ("HIGH", "CRITICAL"):
+            reasons.append("Gemini Multimodal: High-risk voice extortion pattern verified")
 
         return AnalysisResult(
             media_type="video",

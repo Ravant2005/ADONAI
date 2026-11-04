@@ -40,4 +40,8 @@ captures/
 .env
 .env.local
 secrets.json
+secrets/
 google-services.json
+*/google-services.json
+*google-services.json
+

@@ -21,6 +21,7 @@ import urllib.parse
 import urllib.request
 from dataclasses import dataclass, field
 from typing import Optional
+import os
 import socket
 
 # ---------------------------------------------------------------------------
@@ -476,8 +477,92 @@ class WebIntelEngine:
         if self._enable_live_web and len(query_terms) > 0:
             live_results = self._fetch_live_news(query_terms[:5])
             matching.extend(live_results)
+            newsapi_results = self._fetch_newsapi(query_terms[:5])
+            matching.extend(newsapi_results)
+            open_results = self._scrape_open_web(query_terms[:5])
+            matching.extend(open_results)
 
         return matching[:10]
+
+    def _fetch_newsapi(self, query_terms: list[str]) -> list[dict]:
+        """Fetch articles from NewsAPI.org using configured NEWS_API_KEY."""
+        api_key = os.environ.get("NEWS_API_KEY", "18788ff334aa458d9b009db9334c270d")
+        if not api_key:
+            return []
+        query = urllib.parse.quote(" ".join(query_terms[:3]))
+        url = f"https://newsapi.org/v2/everything?q={query}&apiKey={api_key}&language=en&pageSize=5&sortBy=relevancy"
+        data = _safe_get(url, timeout=3)
+        if not data:
+            return []
+        try:
+            payload = json.loads(data.decode("utf-8", errors="replace"))
+            articles = []
+            for art in payload.get("articles", [])[:5]:
+                articles.append({
+                    "title": art.get("title", ""),
+                    "source": art.get("source", {}).get("name", "NewsAPI"),
+                    "url": art.get("url", ""),
+                    "matched_terms": query_terms[:3],
+                    "date": art.get("publishedAt", "recent"),
+                    "type": "news_api",
+                })
+            return articles
+        except Exception:
+            return []
+
+    def _scrape_open_web(self, query_terms: list[str]) -> list[dict]:
+        """Open-source live web search scraper using Wikipedia & DuckDuckGo (zero API keys required)."""
+        results = []
+        q_str = " ".join(query_terms[:3]).strip()
+        if not q_str:
+            return []
+
+        # 1. Wikipedia OpenSearch API (public, no key needed, highly reliable for entity verification)
+        try:
+            wiki_url = f"https://en.wikipedia.org/w/api.php?action=opensearch&search={urllib.parse.quote(q_str)}&limit=3&namespace=0&format=json"
+            wiki_data = _safe_get(wiki_url, timeout=3)
+            if wiki_data:
+                payload = json.loads(wiki_data.decode("utf-8", errors="replace"))
+                if len(payload) >= 4:
+                    titles, _, urls = payload[1], payload[2], payload[3]
+                    for title, url in zip(titles, urls):
+                        results.append({
+                            "title": title,
+                            "source": "Wikipedia Verified Knowledge Base",
+                            "url": url,
+                            "matched_terms": query_terms[:3],
+                            "date": "live",
+                            "type": "open_web_search",
+                        })
+        except Exception:
+            pass
+
+        # 2. DuckDuckGo HTML open search scraper
+        try:
+            ddg_url = f"https://html.duckduckgo.com/html/?q={urllib.parse.quote(q_str)}"
+            ddg_data = _safe_get(ddg_url, timeout=3)
+            if ddg_data:
+                html_text = ddg_data.decode("utf-8", errors="replace")
+                snippets = re.findall(r'<a class="result__snippet[^"]*"[^>]*>(.*?)</a>', html_text, re.DOTALL)
+                titles = re.findall(r'<a class="result__url[^"]*"[^>]*href="([^"]+)"[^>]*>(.*?)</a>', html_text, re.DOTALL)
+                for i, snip in enumerate(snippets[:3]):
+                    clean_snip = re.sub(r'<[^>]+>', '', snip).strip()
+                    clean_title = re.sub(r'<[^>]+>', '', titles[i][1]).strip() if i < len(titles) else f"Web Result: {q_str}"
+                    res_url = titles[i][0] if i < len(titles) else ""
+                    if clean_title:
+                        results.append({
+                            "title": clean_title,
+                            "source": "Open Web Search",
+                            "url": res_url,
+                            "snippet": clean_snip,
+                            "matched_terms": query_terms[:3],
+                            "date": "live",
+                            "type": "open_web_search",
+                        })
+        except Exception:
+            pass
+
+        return results
 
     def _fetch_live_news(self, query_terms: list[str]) -> list[dict]:
         """Try to fetch live news via public RSS. Returns empty list on failure."""

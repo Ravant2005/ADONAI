@@ -39,6 +39,23 @@ def _get_guardian_modules():
 ROOT_DIR = Path(__file__).resolve().parent.parent
 DASHBOARD_DIR = ROOT_DIR / "dashboard"
 
+# Auto-load .env configuration if present
+def _load_env_file():
+    env_file = ROOT_DIR / ".env"
+    if env_file.exists():
+        try:
+            for line in env_file.read_text().splitlines():
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    k, v = line.split("=", 1)
+                    k, v = k.strip(), v.strip().strip("'\"")
+                    if k and k not in os.environ:
+                        os.environ[k] = v
+        except Exception:
+            pass
+
+_load_env_file()
+
 app = FastAPI(
     title="ADONAI Personal Cyber-Intelligence API",
     description="Local-first personal cyber-intelligence brain, deterministic detection engine, and 1,000-node 3D cyber-range.",
