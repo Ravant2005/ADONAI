@@ -96,7 +96,7 @@ val AdonaiTextMuted  = Color(0xFF64748B)
  *
  * @property uri         Content URI for the file.
  * @property displayName File name shown in the UI.
- * @property mimeType    MIME type string (image/*, video/*, audio/*).
+ * @property mimeType    MIME type string (e.g. image, video, audio).
  * @property sizeBytes   File size in bytes.
  */
 data class MediaItem(
@@ -226,60 +226,66 @@ fun GuardianVaultScreen() {
                     )
                 }
             }
-        },
-        floatingActionButton = {
-            selectedItem?.let { item ->
-                FloatingActionButton(
-                    onClick          = { verifySelected(item) },
-                    containerColor   = AdonaiRed,
-                    contentColor     = AdonaiPureWhite
-                ) {
-                    Icon(Icons.Default.Shield, contentDescription = "Verify selected file")
-                }
-            }
         }
     ) { paddingValues ->
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(AdonaiBackground)
                 .padding(paddingValues)
         ) {
-            // Screen title
-            Text(
-                text       = "Guardian Vault",
-                color      = AdonaiTextWhite,
-                fontSize   = 22.sp,
-                fontWeight = FontWeight.Bold,
-                modifier   = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
-            )
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                // Screen title
+                Text(
+                    text       = "Guardian Vault",
+                    color      = AdonaiTextWhite,
+                    fontSize   = 22.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier   = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+                )
 
-            if (mediaItems.isEmpty()) {
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("No media found", color = AdonaiTextMuted)
-                }
-            } else {
-                LazyVerticalGrid(
-                    columns         = GridCells.Fixed(3),
-                    contentPadding  = PaddingValues(4.dp),
-                    verticalArrangement   = Arrangement.spacedBy(4.dp),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    modifier        = Modifier.fillMaxSize()
-                ) {
-                    items(mediaItems, key = { it.uri.toString() }) { item ->
-                        val isSelected = selectedItem?.uri == item.uri
-                        val cachedResult = verificationCache[item.uri]
-
-                        MediaGridCard(
-                            item         = item,
-                            isSelected   = isSelected,
-                            verifyResult = cachedResult,
-                            onClick      = {
-                                selectedItem = if (isSelected) null else item
-                            },
-                            onLongClick  = { verifySelected(item) }
-                        )
+                if (mediaItems.isEmpty()) {
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text("No media found", color = AdonaiTextMuted)
                     }
+                } else {
+                    LazyVerticalGrid(
+                        columns         = GridCells.Fixed(3),
+                        contentPadding  = PaddingValues(4.dp),
+                        verticalArrangement   = Arrangement.spacedBy(4.dp),
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        modifier        = Modifier.fillMaxSize()
+                    ) {
+                        items(mediaItems, key = { it.uri.toString() }) { item ->
+                            val isSelected = selectedItem?.uri == item.uri
+                            val cachedResult = verificationCache[item.uri]
+
+                            MediaGridCard(
+                                item         = item,
+                                isSelected   = isSelected,
+                                verifyResult = cachedResult,
+                                onClick      = {
+                                    selectedItem = if (isSelected) null else item
+                                },
+                                onLongClick  = { verifySelected(item) }
+                            )
+                        }
+                    }
+                }
+            }
+
+            selectedItem?.let { item ->
+                FloatingActionButton(
+                    onClick          = { verifySelected(item) },
+                    containerColor   = AdonaiRed,
+                    contentColor     = AdonaiPureWhite,
+                    modifier         = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(24.dp)
+                ) {
+                    Icon(Icons.Default.Shield, contentDescription = "Verify selected file")
                 }
             }
         }

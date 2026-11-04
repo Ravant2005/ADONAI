@@ -1,6 +1,6 @@
 # ADONAI — Environment Discovery Report
 
-Generated automatically by `scripts/discover_environment.py` at `2026-11-04T16:05:00.063005+00:00`.
+Generated automatically by `scripts/discover_environment.py` at `2026-11-04T17:51:17.548613+00:00`.
 
 ## 1. Host Hardware & OS
 | Property | Detected Value |
@@ -8,7 +8,7 @@ Generated automatically by `scripts/discover_environment.py` at `2026-11-04T16:0
 | Operating System | `Darwin 25.5.0` |
 | CPU Architecture | `arm64` (10 logical cores) |
 | System Memory (RAM) | `8.0 GB` |
-| Available Disk Space | `52.91 GB free / 460.38 GB total` |
+| Available Disk Space | `46.31 GB free / 460.38 GB total` |
 
 ## 2. Runtime & Toolchain Availability
 | Component | Available | Version / Details |

@@ -30,7 +30,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.Share
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ExpandLess
@@ -124,7 +124,7 @@ fun VerificationResultScreen(
                         shareVerdict(context = context, result = result)
                     }) {
                         Icon(
-                            Icons.AutoMirrored.Filled.Share,
+                            Icons.Default.Share,
                             contentDescription = "Share verdict",
                             tint = AdonaiTextWhite
                         )
@@ -243,7 +243,7 @@ fun VerificationResultScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Icon(
-                    Icons.AutoMirrored.Filled.Share,
+                    Icons.Default.Share,
                     contentDescription = null,
                     tint = AdonaiPureWhite,
                     modifier = Modifier.size(18.dp)

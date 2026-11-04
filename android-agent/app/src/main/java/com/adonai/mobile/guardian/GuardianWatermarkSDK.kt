@@ -186,7 +186,7 @@ object GuardianWatermarkSDK {
             }.toString()
 
             // 6. POST to Guardian backend
-            val result = httpPost(REGISTER_ENDPOINT, requestBody)
+            val result = httpPost(getRegisterEndpoint(context), requestBody)
             Log.i(TAG, "registerWithBackend: response → $result")
 
         } catch (e: Exception) {
@@ -236,7 +236,7 @@ object GuardianWatermarkSDK {
                 put("device_id",    deviceId)
             }.toString()
 
-            val responseJson = httpPost(VERIFY_ENDPOINT, requestBody)
+            val responseJson = httpPost(getVerifyEndpoint(context), requestBody)
             Log.i(TAG, "verifyMedia: response → $responseJson")
 
             parseVerifyResult(responseJson)

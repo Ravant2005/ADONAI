@@ -47,7 +47,7 @@ interface AdonaiDao {
     suspend fun purgeEventsByEnvironment(env: String)
 }
 
-@Database(entities = [LocalEventEntity::class, TrustedContactEntity::class], version = 1, exportSchema = true)
+@Database(entities = [LocalEventEntity::class, TrustedContactEntity::class], version = 1, exportSchema = false)
 abstract class AdonaiDatabase : RoomDatabase() {
     abstract fun adonaiDao(): AdonaiDao
 }
